@@ -792,6 +792,46 @@ input[type="text"]:focus, select:focus, textarea:focus {
     box-shadow: 1px 1px 0px #000;
 }
 
+/* Retro Danger Button */
+.btn-danger {
+    background: var(--accent-danger);
+    border: var(--border-width) solid var(--border-color);
+    color: #ffffff;
+    padding: 0.75rem 1.25rem;
+    font-family: var(--font-heading);
+    font-size: 0.6rem;
+    border-radius: 0px;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    cursor: pointer;
+    box-shadow: var(--shadow-retro-sm);
+    transition: var(--transition-smooth);
+}
+
+.btn-danger:hover {
+    background: #ff5577;
+    transform: translate(-2px, -2px);
+    box-shadow: 5px 5px 0px #000;
+}
+
+.btn-danger:active {
+    transform: translate(2px, 2px);
+    box-shadow: 1px 1px 0px #000;
+}
+
+/* Confirm Modal Specifics */
+.confirm-title {
+    color: var(--accent-danger) !important;
+}
+
+.confirm-text {
+    font-size: 1.25rem;
+    color: #ffffff;
+    line-height: 1.4;
+    text-align: center;
+}
+
 /* ==========================================================================
    Animations
    ========================================================================== */

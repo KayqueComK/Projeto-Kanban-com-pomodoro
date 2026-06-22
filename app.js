@@ -10,6 +10,7 @@ const WORK_TIME = 25 * 60; // 25 min in seconds
 let timerTimeLeft = WORK_TIME;
 let timerInterval = null;
 let timerRunning = false;
+let taskIdToDelete = null;
 
 // --- DOM ELEMENTS ---
 const timerDisplay = document.getElementById('timer-display');
@@ -45,6 +46,11 @@ const taskTitleInput = document.getElementById('task-title');
 const taskDescInput = document.getElementById('task-desc');
 const taskPriorityInput = document.getElementById('task-priority');
 const taskTagInput = document.getElementById('task-tag');
+
+// Confirmation Modal elements
+const confirmModal = document.getElementById('confirm-modal');
+const confirmCancelBtn = document.getElementById('confirm-cancel-btn');
+const confirmDeleteBtn = document.getElementById('confirm-delete-btn');
 
 // --- SETUP POMODORO PROGRESS CIRCLE ---
 const radius = timerCircle.r.baseVal.value;
@@ -433,12 +439,31 @@ function addOrUpdateTask(e) {
 }
 
 function deleteTask(id) {
-    if (confirm('Tem certeza que deseja excluir esta tarefa?')) {
-        tasks = tasks.filter(t => t.id !== id);
+    taskIdToDelete = id;
+    confirmModal.classList.add('active');
+}
+
+function closeConfirmModal() {
+    confirmModal.classList.remove('active');
+    taskIdToDelete = null;
+}
+
+confirmCancelBtn.addEventListener('click', closeConfirmModal);
+confirmDeleteBtn.addEventListener('click', () => {
+    if (taskIdToDelete) {
+        tasks = tasks.filter(t => t.id !== taskIdToDelete);
         saveTasks();
         renderBoard();
     }
-}
+    closeConfirmModal();
+});
+
+// Close confirm modal when clicking outside content area
+confirmModal.addEventListener('click', (e) => {
+    if (e.target === confirmModal) {
+        closeConfirmModal();
+    }
+});
 
 function generateUUID() {
     return 'task-' + Math.random().toString(36).substr(2, 9);

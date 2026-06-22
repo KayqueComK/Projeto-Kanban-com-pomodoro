@@ -11,7 +11,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Share+Tech+Mono&display=swap"
         rel="stylesheet">
-    <link rel="stylesheet" href="index.css?v=1.5">
+    <link rel="stylesheet" href="index.css?v=1.6">
     <link rel="shortcut icon" href="./img/favicon.png"/>
 </head>
 <body>
@@ -163,7 +163,23 @@
         </div>
     </div>
 
-    <script src="app.js?v=1.5"></script>
+    <!-- Modal de Confirmação de Exclusão -->
+    <div class="modal-overlay" id="confirm-modal">
+        <div class="modal-content glass-panel" style="max-width: 400px; text-align: center;">
+            <div class="modal-header" style="justify-content: center;">
+                <h3 id="confirm-title" class="confirm-title" style="font-family: var(--font-heading); font-size: 0.75rem;">AVISO DE SISTEMA</h3>
+            </div>
+            <div style="margin: 1.5rem 0;">
+                <p class="confirm-text">Tem certeza que deseja excluir esta tarefa permanentemente?</p>
+            </div>
+            <div class="modal-actions" style="justify-content: center; gap: 1rem; margin-top: 1rem;">
+                <button type="button" class="btn-secondary" id="confirm-cancel-btn">Cancelar</button>
+                <button type="button" class="btn-danger" id="confirm-delete-btn">Excluir</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js?v=1.6"></script>
     </body>
 
 </html>
