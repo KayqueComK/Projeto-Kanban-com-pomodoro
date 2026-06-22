@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Zenith // Dashboard de Produtividade & Kanban</title>
+    <!-- Google Fonts: Inter & Outfit -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Share+Tech+Mono&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="index.css?v=1.5">
+    <link rel="shortcut icon" href="./img/xicara-quente.png"/>
+</head>
+<body>
+    <div class=" app-container">
+    <!-- Sidebar Esquerda -->
+    <aside class="sidebar">
+        <div class="brand">
+            <div class="logo-icon">
+                <svg class="pixel-icon" viewBox="0 0 24 24"><path d="M8 4h8v2H8V4zm-2 4h12v2H6V8zm-2 4h16v6H4v-6zm4 8h8v2H8v-2z"/></svg>
+            </div>
+            <h1>Zenith</h1>
+        </div>
+
+        <!-- Pomodoro Widget -->
+        <div class="pomodoro-widget glass-panel">
+            <h3><svg class="pixel-icon" viewBox="0 0 24 24"><path d="M9 2h6v2H9V2zm0 18h6v2H9v-2zm-5-9h2v2H4v-2zm14 0h2v2h-2v-2zM6 6h12v12H6V6zm2 2v8h8V8H8zm2 2h2v4H10v-2H8v-2h2v2z"/></svg> Foco Pomodoro</h3>
+            <div class="timer-display" id="timer-display">25:00</div>
+            <div class="timer-progress-container">
+                <svg class="progress-ring" width="120" height="120">
+                    <circle class="progress-ring__circle-bg" stroke="rgba(255,255,255,0.05)" stroke-width="6"
+                        fill="transparent" r="50" cx="60" cy="60" />
+                    <circle class="progress-ring__circle" id="timer-progress" stroke="var(--accent-primary)"
+                        stroke-width="6" fill="transparent" r="50" cx="60" cy="60" />
+                </svg>
+            </div>
+            <div class="timer-controls">
+                <button id="timer-play-pause" class="btn-icon" title="Iniciar/Pausar"><svg class="pixel-icon" viewBox="0 0 24 24"><path d="M8 5v14l11-7L8 5z"/></svg></button>
+                <button id="timer-reset" class="btn-icon" title="Resetar"><svg class="pixel-icon" viewBox="0 0 24 24"><path d="M12 5V1L7 6l5 5V7c3.31 0 6 2.69 6 6s-2.69 6-6 6-6-2.69-6-6H4c0 4.42 3.58 8 8 8s8-3.58 8-8-3.58-8-8-8z"/></svg></button>
+            </div>
+            <div class="timer-status" id="timer-status">Pronto para focar</div>
+        </div>
+
+        <!-- Gráfico de Produtividade -->
+        <div class="productivity-widget glass-panel">
+            <h3><svg class="pixel-icon" viewBox="0 0 24 24"><path d="M4 18h2v2H4v-2zm4-6h2v8H8v-8zm4-6h2v14h-2V6zm4 8h2v6h-2v-6zm4-4h2v10h-2V10z"/></svg> Desempenho</h3>
+            <div class="chart-container">
+                <canvas id="productivity-chart" width="200" height="120"></canvas>
+            </div>
+            <div class="chart-stats">
+                <div class="stat-item">
+                    <span class="stat-value" id="stats-completed">0</span>
+                    <span class="stat-label">Concluídas</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-value" id="stats-efficiency">0%</span>
+                    <span class="stat-label">Eficiência</span>
+                </div>
+            </div>
+        </div>
+    </aside>
+
+    <!-- Área Principal -->
+    <main class="main-content">
+        <header class="main-header">
+            <div class="welcome">
+                <h2>Seu Espaço de Foco</h2>
+                <p>Organize suas metas de hoje e maximize sua produtividade.</p>
+            </div>
+            <div class="header-actions">
+                <button id="add-task-btn" class="btn-primary">
+                    <svg class="pixel-icon" viewBox="0 0 24 24"><path d="M11 5h2v6h6v2h-6v6h-2v-6H5v-2h6V5z"/></svg> Nova Tarefa
+                </button>
+            </div>
+        </header>
+
+        <!-- Quadro Kanban -->
+        <div class="kanban-board">
+            <!-- Coluna: A Fazer -->
+            <div class="kanban-column" id="col-todo" data-status="todo">
+                <div class="column-header">
+                    <div class="column-title">
+                        <span class="column-indicator indicator-todo"></span>
+                        <h3>A Fazer</h3>
+                    </div>
+                    <span class="column-count" id="count-todo">0</span>
+                </div>
+                <div class="column-cards-container" id="cards-todo">
+                    <!-- Os cartões de tarefas serão inseridos aqui via JS -->
+                </div>
+            </div>
+
+            <!-- Coluna: Em Andamento -->
+            <div class="kanban-column" id="col-progress" data-status="progress">
+                <div class="column-header">
+                    <div class="column-title">
+                        <span class="column-indicator indicator-progress"></span>
+                        <h3>Em Andamento</h3>
+                    </div>
+                    <span class="column-count" id="count-progress">0</span>
+                </div>
+                <div class="column-cards-container" id="cards-progress">
+                    <!-- Os cartões de tarefas serão inseridos aqui via JS -->
+                </div>
+            </div>
+
+            <!-- Coluna: Concluído -->
+            <div class="kanban-column" id="col-done" data-status="done">
+                <div class="column-header">
+                    <div class="column-title">
+                        <span class="column-indicator indicator-done"></span>
+                        <h3>Concluído</h3>
+                    </div>
+                    <span class="column-count" id="count-done">0</span>
+                </div>
+                <div class="column-cards-container" id="cards-done">
+                    <!-- Os cartões de tarefas serão inseridos aqui via JS -->
+                </div>
+            </div>
+        </div>
+    </main>
+    </div>
+
+    <!-- Modal para Nova/Editar Tarefa -->
+    <div class="modal-overlay" id="task-modal">
+        <div class="modal-content glass-panel">
+            <div class="modal-header">
+                <h3 id="modal-title">Nova Tarefa</h3>
+                <button class="btn-close" id="close-modal-btn"><svg class="pixel-icon" viewBox="0 0 24 24"><path d="M5 5h2v2H5V5zm2 2h2v2H7V7zm2 2h2v2H9V9zm4 0h2v2h-2V9zm2-2h2v2h-2V7zm2-2h2v2h-2V5zm-8 8h2v2h-2v-2zm-2 2h2v2H9v-2zm-2 2h2v2H7v-2zm8 0h2v2h-2v-2zm2-2h2v2h-2v-2z"/></svg></button>
+            </div>
+            <form id="task-form">
+                <input type="hidden" id="task-id">
+                <div class="form-group">
+                    <label for="task-title">Título da Tarefa</label>
+                    <input type="text" id="task-title" placeholder="O que precisa ser feito?" required>
+                </div>
+                <div class="form-group">
+                    <label for="task-desc">Descrição</label>
+                    <textarea id="task-desc" placeholder="Detalhes opcionais..." rows="3"></textarea>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="task-priority">Prioridade</label>
+                        <select id="task-priority">
+                            <option value="low">Baixa</option>
+                            <option value="medium" selected>Média</option>
+                            <option value="high">Alta</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="task-tag">Categoria / Tag</label>
+                        <input type="text" id="task-tag" placeholder="Ex: Dev, Design, Estudo">
+                    </div>
+                </div>
+                <div class="modal-actions">
+                    <button type="button" class="btn-secondary" id="cancel-task-btn">Cancelar</button>
+                    <button type="submit" class="btn-primary" id="save-task-btn">Salvar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="app.js?v=1.5"></script>
+    </body>
+
+</html>

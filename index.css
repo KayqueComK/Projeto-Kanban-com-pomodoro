@@ -1,0 +1,818 @@
+/* ==========================================================================
+   Zenith Dashboard - CSS Stylesheet
+   Design System: Retro 8-Bit / Pixel-Art Dark Theme (Purple Edition)
+   ========================================================================== */
+
+:root {
+    /* Color Palette - Dark Purple Theme */
+    --bg-base: #0b0813;        /* Deep Black-Violet */
+    --bg-surface: #120e1e;     /* Dark Violet Panel */
+    --bg-panel: #1a152b;       /* Medium Violet Container */
+    --bg-card: #2c2447;        /* Brighter Purple-Gray for Cards */
+    
+    --border-color: #000000;
+    --border-width: 4px;
+    
+    /* Neon Contrast Accents - Purple and Pink */
+    --accent-primary: #be4dff;        /* Neon Purple */
+    --accent-primary-dark: #8b00d6;
+    --accent-secondary: #ff55bb;      /* Retro Pink */
+    --accent-cyan: #00ffff;           /* Cyan Accent */
+    
+    /* Status Colors (High Contrast) */
+    --accent-success: #00ff66;        /* Bright Green */
+    --accent-warning: #ffcc00;        /* Bright Yellow */
+    --accent-danger: #ff3366;         /* Bright Red */
+    
+    /* Text Colors - High Readability */
+    --text-primary: #ffffff;          /* Pure White */
+    --text-secondary: #e2e8f0;        /* Light Gray */
+    --text-muted: #94a3b8;            /* Medium Gray */
+    
+    /* Typography */
+    --font-heading: 'Press Start 2P', monospace;
+    --font-body: 'Share Tech Mono', monospace;
+    
+    /* Shadow Styling for 8-bit 3D Effect */
+    --shadow-retro-sm: 3px 3px 0px #000000;
+    --shadow-retro-md: 5px 5px 0px #000000;
+    --shadow-retro-lg: 8px 8px 0px #000000;
+    
+    --transition-smooth: all 0.2s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+/* ==========================================================================
+   Global Reset & Setup (8-bit styles)
+   ========================================================================== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    outline: none;
+    image-rendering: pixelated;
+}
+
+body {
+    background-color: var(--bg-base);
+    background-image: 
+        linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%),
+        linear-gradient(90deg, rgba(191, 93, 252, 0.02), rgba(0, 255, 0, 0.01), rgba(255, 85, 187, 0.02));
+    background-size: 100% 4px, 6px 100%; /* CRT Scanline Effect */
+    color: var(--text-primary);
+    font-family: var(--font-body);
+    font-size: 1.2rem;
+    line-height: 1.4;
+    overflow-x: hidden;
+    height: 100vh;
+}
+
+/* Inline SVG Pixel Icons */
+.pixel-icon {
+    width: 24px;
+    height: 24px;
+    display: inline-block;
+    vertical-align: middle;
+    fill: currentColor;
+    flex-shrink: 0;
+}
+
+.brand .logo-icon svg {
+    width: 32px;
+    height: 32px;
+}
+
+.pomodoro-widget h3 svg, .productivity-widget h3 svg {
+    width: 20px;
+    height: 20px;
+    margin-right: 6px;
+}
+
+.btn-primary svg {
+    width: 16px;
+    height: 16px;
+    margin-right: 8px;
+}
+
+.btn-card-action svg, .btn-close svg {
+    width: 14px;
+    height: 14px;
+}
+
+/* Retro Custom Scrollbar */
+::-webkit-scrollbar {
+    width: 12px;
+    height: 12px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--bg-base);
+    border-left: var(--border-width) solid var(--border-color);
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--bg-panel);
+    border: var(--border-width) solid var(--border-color);
+    box-shadow: inset -2px -2px 0px #000;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--accent-primary);
+}
+
+/* ==========================================================================
+   Layout Containers
+   ========================================================================== */
+.app-container {
+    display: grid;
+    grid-template-columns: 340px 1fr;
+    height: 100vh;
+    width: 100vw;
+    overflow: hidden;
+}
+
+/* Retro Panel Base */
+.glass-panel {
+    background: var(--bg-surface);
+    border: var(--border-width) solid var(--border-color);
+    box-shadow: var(--shadow-retro-md);
+    transition: var(--transition-smooth);
+    border-radius: 0px;
+}
+
+.glass-panel:hover {
+    border-color: var(--accent-primary);
+    box-shadow: 6px 6px 0px rgba(191, 93, 252, 0.3);
+    transform: translate(-2px, -2px);
+}
+
+/* ==========================================================================
+   Sidebar Navigation & Widgets
+   ========================================================================== */
+.sidebar {
+    background: var(--bg-surface);
+    border-right: var(--border-width) solid var(--border-color);
+    padding: 2rem 1.25rem;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    overflow-y: auto;
+}
+
+.brand {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding-bottom: 1.5rem;
+    border-bottom: var(--border-width) solid var(--border-color);
+}
+
+.brand .logo-icon {
+    font-size: 1.8rem;
+    color: var(--accent-primary);
+    animation: bounce 2s infinite steps(4);
+}
+
+.brand h1 {
+    font-family: var(--font-heading);
+    font-size: 1.25rem;
+    font-weight: normal;
+    color: #ffffff;
+    text-shadow: 2px 2px 0px var(--accent-secondary);
+}
+
+/* Widgets Base */
+.pomodoro-widget, .productivity-widget {
+    padding: 1.25rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.25rem;
+    border-radius: 0px;
+}
+
+.pomodoro-widget h3, .productivity-widget h3 {
+    width: 100%;
+    font-family: var(--font-heading);
+    font-size: 0.65rem;
+    line-height: 1.5;
+    color: var(--accent-primary);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.pomodoro-widget h3 i, .productivity-widget h3 i {
+    color: var(--accent-secondary);
+    font-size: 0.9rem;
+}
+
+/* Pomodoro Specifics */
+.timer-display {
+    font-family: var(--font-heading);
+    font-size: 1.8rem;
+    color: var(--text-primary);
+    text-shadow: 3px 3px 0px #000;
+    margin-top: -0.25rem;
+    background: #000;
+    padding: 0.5rem 1rem;
+    border: 3px solid var(--border-color);
+}
+
+.timer-progress-container {
+    position: relative;
+    width: 120px;
+    height: 120px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.progress-ring {
+    transform: rotate(-90deg);
+}
+
+.progress-ring__circle-bg {
+    stroke: rgba(0, 0, 0, 0.4);
+}
+
+.progress-ring__circle {
+    transition: stroke-dashoffset 0.15s steps(8);
+    stroke-linecap: square;
+}
+
+.timer-controls {
+    display: flex;
+    gap: 1rem;
+}
+
+.timer-status {
+    font-family: var(--font-heading);
+    font-size: 0.55rem;
+    color: var(--text-secondary);
+    text-align: center;
+    letter-spacing: 0.5px;
+    background: var(--bg-panel);
+    padding: 0.4rem 0.6rem;
+    border: 2px solid var(--border-color);
+    width: 100%;
+}
+
+/* Productivity Specifics */
+.chart-container {
+    width: 100%;
+    height: 120px;
+    display: block;
+    background: #000;
+    border: 3px solid var(--border-color);
+    padding: 5px;
+}
+
+.chart-container canvas {
+    display: block;
+    width: 100%;
+    height: 100%;
+}
+
+.chart-stats {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    width: 100%;
+    text-align: center;
+    border-top: var(--border-width) solid var(--border-color);
+    padding-top: 1rem;
+    margin-top: 0.25rem;
+    gap: 0.5rem;
+}
+
+.stat-item {
+    display: flex;
+    flex-direction: column;
+    background: var(--bg-panel);
+    border: 2px solid var(--border-color);
+    padding: 0.5rem 0.25rem;
+    box-shadow: 2px 2px 0px #000;
+}
+
+.stat-value {
+    font-family: var(--font-heading);
+    font-size: 0.85rem;
+    color: var(--accent-primary);
+}
+
+.stat-label {
+    font-size: 0.7rem;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+}
+
+/* Buttons and Controls (Retro Pixel button style) */
+.btn-icon {
+    background: var(--bg-panel);
+    border: 3px solid var(--border-color);
+    color: var(--text-primary);
+    border-radius: 0px;
+    width: 44px;
+    height: 44px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    box-shadow: var(--shadow-retro-sm);
+    transition: var(--transition-smooth);
+}
+
+.btn-icon i {
+    font-size: 1.2rem;
+}
+
+.btn-icon:hover {
+    background: var(--accent-primary);
+    color: #000000;
+    transform: translate(-1px, -1px);
+    box-shadow: 4px 4px 0px #000;
+}
+
+.btn-icon:active {
+    transform: translate(2px, 2px);
+    box-shadow: 1px 1px 0px #000;
+}
+
+/* ==========================================================================
+   Main Content Area
+   ========================================================================== */
+.main-content {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    overflow: hidden;
+}
+
+.main-header {
+    padding: 2rem 2.5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: var(--border-width) solid var(--border-color);
+    background: var(--bg-surface);
+}
+
+.welcome h2 {
+    font-family: var(--font-heading);
+    font-size: 0.85rem;
+    color: var(--accent-primary);
+    margin-bottom: 0.5rem;
+    text-shadow: 2px 2px 0px #000;
+}
+
+.welcome p {
+    color: var(--text-secondary);
+    font-size: 1.15rem;
+}
+
+.btn-primary {
+    background: var(--accent-primary);
+    border: var(--border-width) solid var(--border-color);
+    color: #000000;
+    padding: 0.75rem 1.25rem;
+    font-family: var(--font-heading);
+    font-size: 0.6rem;
+    border-radius: 0px;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    cursor: pointer;
+    box-shadow: var(--shadow-retro-sm);
+    transition: var(--transition-smooth);
+}
+
+.btn-primary i {
+    font-size: 0.9rem;
+}
+
+.btn-primary:hover {
+    background: #d482ff;
+    transform: translate(-2px, -2px);
+    box-shadow: 5px 5px 0px #000;
+}
+
+.btn-primary:active {
+    transform: translate(2px, 2px);
+    box-shadow: 1px 1px 0px #000;
+}
+
+/* ==========================================================================
+   Kanban Board
+   ========================================================================== */
+.kanban-board {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+    padding: 2rem 2.5rem;
+    flex: 1;
+    overflow-y: auto;
+}
+
+.kanban-column {
+    background: var(--bg-surface);
+    border: var(--border-width) solid var(--border-color);
+    border-radius: 0px;
+    padding: 1.25rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+    height: 100%;
+    min-height: 400px;
+    max-height: calc(100vh - 190px);
+    box-shadow: var(--shadow-retro-md);
+}
+
+.column-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 3px solid var(--border-color);
+    padding-bottom: 0.75rem;
+}
+
+.column-title {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.column-indicator {
+    width: 12px;
+    height: 12px;
+    border-radius: 0px;
+    border: 2px solid #000;
+}
+
+.indicator-todo {
+    background: var(--accent-cyan);
+}
+
+.indicator-progress {
+    background: var(--accent-warning);
+}
+
+.indicator-done {
+    background: var(--accent-success);
+}
+
+.column-title h3 {
+    font-family: var(--font-heading);
+    font-size: 0.65rem;
+    color: var(--text-primary);
+}
+
+.column-count {
+    background: #000000;
+    border: 2px solid var(--border-color);
+    color: var(--accent-primary);
+    padding: 0.2rem 0.5rem;
+    border-radius: 0px;
+    font-family: var(--font-heading);
+    font-size: 0.55rem;
+}
+
+/* Cards Container */
+.column-cards-container {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    overflow-y: auto;
+    padding-right: 2px;
+}
+
+/* Kanban Cards */
+.task-card {
+    background: var(--bg-card);
+    border: 3px solid var(--border-color);
+    border-radius: 0px;
+    padding: 1.25rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    cursor: grab;
+    box-shadow: var(--shadow-retro-sm);
+    transition: var(--transition-smooth);
+    position: relative;
+    user-select: none;
+}
+
+.task-card:hover {
+    transform: translate(-2px, -2px);
+}
+
+#col-todo .task-card:hover {
+    border-color: var(--accent-cyan);
+    box-shadow: 5px 5px 0px rgba(0, 255, 255, 0.45);
+}
+
+#col-progress .task-card:hover {
+    border-color: var(--accent-warning);
+    box-shadow: 5px 5px 0px rgba(255, 204, 0, 0.45);
+}
+
+#col-done .task-card:hover {
+    border-color: var(--accent-success);
+    box-shadow: 5px 5px 0px rgba(0, 255, 102, 0.45);
+}
+
+.task-card.dragging {
+    opacity: 0.5;
+    cursor: grabbing;
+    border: 3px dashed var(--accent-primary);
+    transform: scale(0.98);
+}
+
+.task-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 1rem;
+}
+
+/* HIGH READABILITY UPDATE: Use var(--font-body) (Share Tech Mono) instead of pixel font for card titles */
+.task-title {
+    font-family: var(--font-body);
+    font-size: 1.25rem;
+    font-weight: bold;
+    line-height: 1.2;
+    color: #ffffff; /* pure white */
+}
+
+.task-actions {
+    display: flex;
+    gap: 0.35rem;
+    opacity: 0;
+    transition: opacity var(--transition-smooth);
+}
+
+.task-card:hover .task-actions {
+    opacity: 1;
+}
+
+.btn-card-action {
+    background: var(--bg-panel);
+    border: 2px solid var(--border-color);
+    color: var(--text-secondary);
+    cursor: pointer;
+    width: 28px;
+    height: 28px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 0px;
+    transition: var(--transition-smooth);
+}
+
+.btn-card-action:hover {
+    color: #000;
+    background: var(--accent-primary);
+}
+
+.btn-card-action.delete-btn:hover {
+    background: var(--accent-danger);
+    color: #fff;
+}
+
+/* HIGH READABILITY UPDATE: High-contrast description style (no dark box) */
+.task-desc {
+    font-family: var(--font-body);
+    font-size: 1.15rem;
+    color: #ffffff;                 /* Pure white text */
+    background: transparent;        /* No dark box background */
+    padding: 0;
+    margin-top: 0.4rem;
+    border-left: none;
+    border-top: none;
+    border-right: none;
+    border-bottom: none;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    line-height: 1.4;
+}
+
+.task-card-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 0.25rem;
+}
+
+/* HIGH READABILITY UPDATE: High-contrast badges */
+.task-tag {
+    background: var(--bg-panel);
+    border: 2px solid var(--accent-primary);
+    color: var(--accent-primary);
+    font-family: var(--font-body);
+    font-size: 0.85rem;
+    font-weight: bold;
+    padding: 0.2rem 0.5rem;
+    border-radius: 0px;
+}
+
+.priority-badge {
+    font-family: var(--font-body);
+    font-size: 0.85rem;
+    font-weight: bold;
+    padding: 0.2rem 0.5rem;
+    border-radius: 0px;
+    border: 2px solid var(--border-color);
+    box-shadow: 1px 1px 0px #000;
+}
+
+.priority-high {
+    background: var(--accent-danger);
+    color: #ffffff;
+}
+
+.priority-medium {
+    background: var(--accent-warning);
+    color: #000000;
+}
+
+.priority-low {
+    background: var(--accent-success);
+    color: #000000;
+}
+
+/* Column Drag Hover Effect */
+.column-cards-container.drag-over {
+    background: rgba(191, 93, 252, 0.05);
+    outline: 3px dashed var(--accent-primary);
+}
+
+/* ==========================================================================
+   Modals
+   ========================================================================== */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.85);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    opacity: 0;
+    pointer-events: none;
+    transition: var(--transition-smooth);
+}
+
+.modal-overlay.active {
+    opacity: 1;
+    pointer-events: all;
+}
+
+.modal-content {
+    width: 100%;
+    max-width: 500px;
+    padding: 2rem;
+    background: var(--bg-surface);
+    border: var(--border-width) solid var(--border-color);
+    box-shadow: var(--shadow-retro-lg);
+    transform: scale(0.9);
+    transition: var(--transition-smooth);
+    border-radius: 0px;
+}
+
+.modal-overlay.active .modal-content {
+    transform: scale(1);
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+    border-bottom: 3px solid var(--border-color);
+    padding-bottom: 0.75rem;
+}
+
+.modal-header h3 {
+    font-family: var(--font-heading);
+    font-size: 0.75rem;
+    color: var(--accent-secondary);
+}
+
+.btn-close {
+    background: var(--bg-panel);
+    border: 2px solid var(--border-color);
+    color: var(--text-secondary);
+    font-size: 1rem;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    box-shadow: 2px 2px 0px #000;
+    transition: var(--transition-smooth);
+}
+
+.btn-close:hover {
+    background: var(--accent-danger);
+    color: white;
+}
+
+/* Form Styles */
+#task-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+}
+
+label {
+    font-family: var(--font-heading);
+    font-size: 0.55rem;
+    color: var(--accent-primary);
+}
+
+input[type="text"], select, textarea {
+    background: #000000;
+    border: 3px solid var(--border-color);
+    color: var(--text-primary);
+    padding: 0.75rem;
+    border-radius: 0px;
+    font-family: var(--font-body);
+    font-size: 1.2rem;
+    transition: var(--transition-smooth);
+}
+
+input[type="text"]:focus, select:focus, textarea:focus {
+    border-color: var(--accent-primary);
+}
+
+.modal-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+.btn-secondary {
+    background: var(--bg-panel);
+    border: 3px solid var(--border-color);
+    color: var(--text-secondary);
+    padding: 0.75rem 1.25rem;
+    font-family: var(--font-heading);
+    font-size: 0.65rem;
+    border-radius: 0px;
+    cursor: pointer;
+    box-shadow: var(--shadow-retro-sm);
+    transition: var(--transition-smooth);
+}
+
+.btn-secondary:hover {
+    border-color: var(--text-primary);
+    color: var(--text-primary);
+}
+
+.btn-secondary:active {
+    transform: translate(2px, 2px);
+    box-shadow: 1px 1px 0px #000;
+}
+
+/* ==========================================================================
+   Animations
+   ========================================================================== */
+@keyframes bounce {
+    0%, 100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-8px);
+    }
+}
+
+/* Responsive adjustments */
+@media (max-width: 1024px) {
+    .app-container {
+        grid-template-columns: 300px 1fr;
+    }
+    .kanban-board {
+        padding: 1.5rem;
+        gap: 1rem;
+    }
+}
+
+
