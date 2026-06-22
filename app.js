@@ -61,7 +61,7 @@ function updateTimerProgress(percent) {
 function playChime() {
     try {
         const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-        
+
         // Note 1 (C5) - Chiptune triangle wave
         const osc1 = audioCtx.createOscillator();
         const gain1 = audioCtx.createGain();
@@ -73,7 +73,7 @@ function playChime() {
         gain1.connect(audioCtx.destination);
         osc1.start();
         osc1.stop(audioCtx.currentTime + 0.4);
-        
+
         // Note 2 (E5, delayed) - Chiptune triangle wave
         const osc2 = audioCtx.createOscillator();
         const gain2 = audioCtx.createGain();
@@ -108,11 +108,11 @@ function startTimer() {
     timerRunning = true;
     timerPlayPauseBtn.innerHTML = '<svg class="pixel-icon" viewBox="0 0 24 24"><path d="M6 5h4v14H6V5zm8 0h4v14h-4V5z"/></svg>';
     timerStatusText.textContent = "Focando...";
-    
+
     timerInterval = setInterval(() => {
         timerTimeLeft--;
         updateTimerDisplay();
-        
+
         if (timerTimeLeft <= 0) {
             clearInterval(timerInterval);
             timerInterval = null;
@@ -157,18 +157,18 @@ function drawProductivityChart() {
     const canvas = document.getElementById('productivity-chart');
     if (!canvas) return;
     const container = canvas.parentElement;
-    
+
     // Ajustar a resolução do Canvas para corresponder ao contêiner pai
     canvas.width = container.clientWidth - 10;
     canvas.height = container.clientHeight - 10;
-    
+
     const ctx = canvas.getContext('2d');
     const width = canvas.width;
     const height = canvas.height;
-    
+
     // Clear Canvas
     ctx.clearRect(0, 0, width, height);
-    
+
     // Generate dates for last 7 days
     const days = [];
     const countsData = [];
@@ -177,11 +177,11 @@ function drawProductivityChart() {
         date.setDate(date.getDate() - i);
         const dateString = date.toDateString();
         days.push(date.toLocaleDateString('pt-BR', { weekday: 'short' }).replace('.', ''));
-        
+
         const count = tasks.filter(t => t.status === 'done' && t.completedAt && new Date(t.completedAt).toDateString() === dateString).length;
         countsData.push(count);
     }
-    
+
     // Draw Grid Lines
     ctx.strokeStyle = 'rgba(255, 255, 255, 0.05)';
     ctx.lineWidth = 1;
@@ -191,7 +191,7 @@ function drawProductivityChart() {
     ctx.moveTo(15, height - 25);
     ctx.lineTo(width - 15, height - 25);
     ctx.stroke();
-    
+
     // Graph bounds and points
     const paddingX = 20;
     const graphWidth = width - paddingX * 2;
@@ -202,7 +202,7 @@ function drawProductivityChart() {
         const y = (height - 25) - (c / maxVal) * (height - 40);
         return { x, y, val: c };
     });
-    
+
     // Fill Stepped Area
     if (points.length > 0) {
         ctx.fillStyle = 'rgba(190, 77, 255, 0.15)';
@@ -210,8 +210,8 @@ function drawProductivityChart() {
         ctx.moveTo(points[0].x, height - 25);
         ctx.lineTo(points[0].x, points[0].y);
         for (let i = 0; i < points.length - 1; i++) {
-            const nextX = points[i+1].x;
-            const nextY = points[i+1].y;
+            const nextX = points[i + 1].x;
+            const nextY = points[i + 1].y;
             ctx.lineTo(nextX, points[i].y);
             ctx.lineTo(nextX, nextY);
         }
@@ -219,20 +219,20 @@ function drawProductivityChart() {
         ctx.closePath();
         ctx.fill();
     }
-    
+
     // Draw Stepped Line
     ctx.strokeStyle = '#be4dff';
     ctx.lineWidth = 3;
     ctx.beginPath();
     ctx.moveTo(points[0].x, points[0].y);
     for (let i = 0; i < points.length - 1; i++) {
-        const nextX = points[i+1].x;
-        const nextY = points[i+1].y;
+        const nextX = points[i + 1].x;
+        const nextY = points[i + 1].y;
         ctx.lineTo(nextX, points[i].y);
         ctx.lineTo(nextX, nextY);
     }
     ctx.stroke();
-    
+
     // Draw points & values
     points.forEach(p => {
         // Pixel/Square Dot
@@ -241,7 +241,7 @@ function drawProductivityChart() {
         ctx.lineWidth = 2;
         ctx.fillRect(p.x - 3, p.y - 3, 6, 6);
         ctx.strokeRect(p.x - 3, p.y - 3, 6, 6);
-        
+
         // Show non-zero values on top of dots
         if (p.val > 0) {
             ctx.fillStyle = '#ffffff';
@@ -250,7 +250,7 @@ function drawProductivityChart() {
             ctx.fillText(p.val, p.x, p.y - 8);
         }
     });
-    
+
     // X Axis Labels (Days)
     ctx.fillStyle = '#b2b8d3';
     ctx.font = '9px "Share Tech Mono"';
@@ -264,7 +264,7 @@ function drawProductivityChart() {
 function updateStats() {
     const completedCount = tasks.filter(t => t.status === 'done').length;
     statsCompleted.textContent = completedCount;
-    
+
     const totalCount = tasks.length;
     const efficiency = totalCount > 0 ? Math.round((completedCount / totalCount) * 100) : 0;
     statsEfficiency.textContent = `${efficiency}%`;
@@ -283,21 +283,21 @@ function createTaskCardElement(task) {
     card.className = 'task-card';
     card.draggable = true;
     card.dataset.id = task.id;
-    
+
     // Add active dragging style
     card.addEventListener('dragstart', () => {
         card.classList.add('dragging');
     });
-    
+
     card.addEventListener('dragend', () => {
         card.classList.remove('dragging');
     });
-    
+
     // Setup Priority badge template
     const priorityLabels = { low: 'Baixa', medium: 'Média', high: 'Alta' };
     const priorityClass = `priority-${task.priority}`;
     const priorityText = priorityLabels[task.priority];
-    
+
     card.innerHTML = `
         <div class="task-card-header">
             <h4 class="task-title">${escapeHTML(task.title)}</h4>
@@ -312,23 +312,23 @@ function createTaskCardElement(task) {
             ${task.tag ? `<span class="task-tag">${escapeHTML(task.tag)}</span>` : ''}
         </div>
     `;
-    
+
     // Card Action Event Listeners
     card.querySelector('.edit-btn').addEventListener('click', (e) => {
         e.stopPropagation();
         openModal(task);
     });
-    
+
     card.querySelector('.delete-btn').addEventListener('click', (e) => {
         e.stopPropagation();
         deleteTask(task.id);
     });
-    
+
     return card;
 }
 
 function escapeHTML(str) {
-    return str.replace(/[&<>'"]/g, 
+    return str.replace(/[&<>'"]/g,
         tag => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[tag] || tag)
     );
 }
@@ -338,9 +338,9 @@ function renderBoard() {
     columns.todo.innerHTML = '';
     columns.progress.innerHTML = '';
     columns.done.innerHTML = '';
-    
+
     const countData = { todo: 0, progress: 0, done: 0 };
-    
+
     // Render and append card elements
     tasks.forEach(task => {
         const card = createTaskCardElement(task);
@@ -349,7 +349,7 @@ function renderBoard() {
             countData[task.status]++;
         }
     });
-    
+
     // Update counter badges
     counts.todo.textContent = countData.todo;
     counts.progress.textContent = countData.progress;
@@ -359,24 +359,24 @@ function renderBoard() {
 // --- DRAG & DROP LOGIC ---
 Object.keys(columns).forEach(status => {
     const container = columns[status];
-    
+
     container.addEventListener('dragover', (e) => {
         e.preventDefault();
         container.classList.add('drag-over');
     });
-    
+
     container.addEventListener('dragleave', () => {
         container.classList.remove('drag-over');
     });
-    
+
     container.addEventListener('drop', () => {
         container.classList.remove('drag-over');
         const activeCard = document.querySelector('.dragging');
         if (!activeCard) return;
-        
+
         const taskId = activeCard.dataset.id;
         const task = tasks.find(t => t.id === taskId);
-        
+
         if (task && task.status !== status) {
             // Update status and timestamp if moved to done
             task.status = status;
@@ -395,15 +395,15 @@ Object.keys(columns).forEach(status => {
 // --- TASK ACTIONS ---
 function addOrUpdateTask(e) {
     e.preventDefault();
-    
+
     const id = taskIdInput.value;
     const title = taskTitleInput.value.trim();
     const desc = taskDescInput.value.trim();
     const priority = taskPriorityInput.value;
     const tag = taskTagInput.value.trim();
-    
+
     if (!title) return;
-    
+
     if (id) {
         // Edit Mode
         const task = tasks.find(t => t.id === id);
@@ -426,7 +426,7 @@ function addOrUpdateTask(e) {
         };
         tasks.push(newTask);
     }
-    
+
     saveTasks();
     renderBoard();
     closeModal();
@@ -447,7 +447,7 @@ function generateUUID() {
 // --- MODAL CONTROLLERS ---
 function openModal(task = null) {
     taskModal.classList.add('active');
-    
+
     if (task) {
         modalTitle.textContent = "Editar Tarefa";
         taskIdInput.value = task.id;
@@ -515,7 +515,7 @@ function init() {
         ];
         saveTasks();
     }
-    
+
     updateTimerDisplay();
     updateStats();
     renderBoard();
